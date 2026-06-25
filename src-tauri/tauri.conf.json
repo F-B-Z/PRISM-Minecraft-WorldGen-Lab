@@ -3,6 +3,17 @@
   "productName": "PRISM Worldgen Lab",
   "version": "0.1.0",
   "identifier": "de.fabix.prism.worldgen.lab",
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDNGQTFCRjc4QjI2ODgwNkIKUldScmdHaXllTCtoUDhMVnRYNkNUSGZpSzVCc3dFN1hEeEw5THlvbk83UDZkWE1BYmtFdVBMQ3UK",
+      "endpoints": [
+        "https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  },
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -28,6 +39,7 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "createUpdaterArtifacts": true,
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -35,6 +47,12 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": false
+      }
+    },
     "android": {
       "debugApplicationIdSuffix": ".debug"
     }

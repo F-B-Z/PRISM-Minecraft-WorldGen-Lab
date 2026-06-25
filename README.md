@@ -44,6 +44,43 @@ Build outputs:
 - Windows installers:
   `src-tauri/target/release/bundle/`
 
+## Public Releases and Updates
+
+Use the release helper to build the portable app, installer, and updater metadata:
+
+```powershell
+npm run release:public -- -OpenFolder
+```
+
+The script checks local build requirements, configures the Tauri updater signing
+key, builds the desktop bundles, and writes versioned artifacts under
+`release/<tag>/`:
+
+- `PRISM-Worldgen-Lab-<version>-portable-windows-x64.zip`
+- `installer/` with the NSIS setup exe and MSI
+- `updater/` with the signed Tauri updater asset and signature
+- `latest.json` for GitHub updater checks
+- `release-manifest.json` with upload guidance
+
+The updater checks GitHub once at desktop startup. When a newer signed release
+exists, the app shows a PRISM update popup and can install/restart itself.
+Upload the updater asset, its `.sig`, and `latest.json` to the matching GitHub
+release tag so the endpoint
+`https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab/releases/latest/download/latest.json`
+can resolve it.
+
+The private updater signing key is intentionally not stored in the repository.
+The default expected path is
+`Documents/PRISM Worldgen Lab/Signing/worldgen-lab.key`. If it is missing,
+generate it with:
+
+```powershell
+npx tauri signer generate -w "$env:USERPROFILE\Documents\PRISM Worldgen Lab\Signing\worldgen-lab.key" --ci
+```
+
+The Windows installer is configured to use the official Microsoft Edge WebView2
+download bootstrapper if WebView2 is missing on a tester machine.
+
 The upstream app expects generated vanilla datapack zips under
 `public/vanilla_datapacks/`. If those are missing for a target Minecraft version,
 run:

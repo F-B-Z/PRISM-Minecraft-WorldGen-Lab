@@ -7,6 +7,7 @@ import { useLoadedDimensionStore } from './stores/useLoadedDimensionStore';
 import { useUiStore } from './stores/useUiStore';
 import Popup from './components/Popup.vue';
 import ModrinthMenu from './components/modrinth/ModrinthMenu.vue';
+import PrismUpdatePrompt from './components/PrismUpdatePrompt.vue';
 
 const loaded = ref(false)
 const sidebarOpen = ref(true)
@@ -91,6 +92,7 @@ onBeforeUnmount(() => {
       @pointerdown="startSidebarResize"
     ></div>
     <MainMap />
+    <PrismUpdatePrompt />
     <div v-if="showIntro" class="intro-backdrop">
       <section class="intro-dialog" role="dialog" aria-modal="true" aria-labelledby="intro-title">
         <header>
