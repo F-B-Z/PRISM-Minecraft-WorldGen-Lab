@@ -7,6 +7,7 @@ import { useSearchStore } from "../stores/useBiomeSearchStore.js";
 import { useLoadedDimensionStore } from "../stores/useLoadedDimensionStore.js";
 import { useSettingsStore } from "../stores/useSettingsStore.js";
 import { useDatapackStore } from "../stores/useDatapackStore.js";
+import { useMdfModeStore } from "../stores/useMdfModeStore.js";
 import { prismTuningDatapack } from "../stores/prismTuningDatapack.js";
 import { Ref, toRaw, watch } from "vue";
 import { ResourceLocation } from "mc-datapack-loader";
@@ -214,6 +215,7 @@ export class BiomeLayer extends L.GridLayer {
 	private loadedDimensionStore = useLoadedDimensionStore()
 	private searchStore = useSearchStore()
 	private settingsStore = useSettingsStore()
+	private mdfModeStore = useMdfModeStore()
 
 	private datapackLoader: Promise<any> | undefined
 
@@ -308,6 +310,15 @@ export class BiomeLayer extends L.GridLayer {
 			if (this.shouldSkipBaselineTuningUpdate()) return
 			this.updateWorkers({
 				settings: true
+			})
+			this.redraw()
+		})
+
+		watch(() => this.mdfModeStore.enabled, async () => {
+			await this.updateWorkers({
+				settings: true,
+				dimension: true,
+				registires: true
 			})
 			this.redraw()
 		})
@@ -606,7 +617,10 @@ export class BiomeLayer extends L.GridLayer {
 		settings?: boolean,
 	}) {
 		this.generationVersion++
-		const update: any = { generationVersion: this.generationVersion }
+		const update: any = {
+			generationVersion: this.generationVersion,
+			mdfMode: this.mdfModeStore.enabled
+		}
 
 		if (do_update.registires) {
 			update.densityFunctions = {}

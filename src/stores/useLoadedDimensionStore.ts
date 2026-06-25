@@ -6,7 +6,9 @@ import { useI18n } from "vue-i18n";
 import { getPreset } from "../BuildIn/MultiNoiseBiomeParameterList.js";
 import { VANILLA_ITEMS } from "../BuildIn/VanillaItems.js";
 import { getCustomDensityFunction, hashCode } from "../util.js";
+import { withMdfDensityFunctionParser } from "../util/moreDensityFunctions.js";
 import { useDatapackStore } from "./useDatapackStore.js";
+import { useMdfModeStore } from "./useMdfModeStore.js";
 import { useSettingsStore } from "./useSettingsStore.js";
 
 import messages from '@intlify/unplugin-vue-i18n/messages'
@@ -26,6 +28,7 @@ export const useLoadedDimensionStore = defineStore('loaded_dimension', () => {
 
     const datapackStore = useDatapackStore()
     const settingsStore = useSettingsStore()
+    const mdfModeStore = useMdfModeStore()
     const i18n = useI18n()
 
     const loaded_dimension = reactive<LoadedDimension>({})
@@ -52,6 +55,7 @@ export const useLoadedDimensionStore = defineStore('loaded_dimension', () => {
     watch(() => settingsStore.world_preset, reload)
     watch(() => settingsStore.dimension, reload)
     watch(() => settingsStore.seed, reload)
+    watch(() => mdfModeStore.enabled, queueReload)
     
     function handle_biome_colors(namespace:string, json: {[key: string]: { r: number, g: number, b: number, name?: string }}){
         for (const biome in json) {
@@ -294,7 +298,10 @@ export const useLoadedDimensionStore = defineStore('loaded_dimension', () => {
 
     }
 
-    const noise_generator_settings = computed(() => NoiseGeneratorSettings.fromJson(loaded_dimension.noise_settings_json))
+    const noise_generator_settings = computed(() => withMdfDensityFunctionParser(
+        mdfModeStore.enabled,
+        () => NoiseGeneratorSettings.fromJson(loaded_dimension.noise_settings_json)
+    ))
 
     const random_state = computed(() => {
         return new RandomState(noise_generator_settings.value, settingsStore.seed)

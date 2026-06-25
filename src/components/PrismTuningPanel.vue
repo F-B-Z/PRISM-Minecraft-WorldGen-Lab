@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useDatapackStore } from '../stores/useDatapackStore';
+import { useMdfModeStore } from '../stores/useMdfModeStore';
 import { usePrismTuningStore, PrismTuningResource } from '../stores/usePrismTuningStore';
 
 const tuningStore = usePrismTuningStore();
 const datapackStore = useDatapackStore();
+const mdfModeStore = useMdfModeStore();
 let unsubscribeDatapacks: (() => void) | undefined;
 const presetImportInput = ref<HTMLInputElement | undefined>();
 const importStatus = ref<string | undefined>();
@@ -205,6 +207,14 @@ onBeforeUnmount(() => unsubscribeDatapacks?.());
                     <li v-for="warning in tuningStore.presetWarnings" :key="warning">{{ warning }}</li>
                 </ul>
             </details>
+        </div>
+
+        <label class="mdf-mode-toggle" title="Switch the editor and preview parser to More Density Functions compatibility mode.">
+            <input v-model="mdfModeStore.enabled" type="checkbox" />
+            <span>MDF Mode {{ mdfModeStore.enabled ? '[x]' : '[ ]' }}</span>
+        </label>
+        <div v-if="mdfModeStore.enabled" class="mdf-mode-note">
+            More Density Functions compatibility is active. Core math and coordinate functions are interpreted; complex MDF noise/image functions are approximate or fall back to zero until implemented.
         </div>
 
         <div class="tree">
@@ -569,6 +579,30 @@ em {
 .preset-warnings ul {
     margin: 0.35rem 0 0;
     padding-left: 1rem;
+}
+
+.mdf-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 1.85rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(54, 214, 230, 0.38);
+    border-radius: 0.35rem;
+    background: rgba(5, 57, 67, 0.66);
+    color: var(--prism-text);
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.mdf-mode-toggle input {
+    accent-color: var(--prism-accent);
+}
+
+.mdf-mode-note {
+    margin-top: -0.35rem;
+    color: var(--prism-muted);
+    line-height: 1.3;
 }
 
 .inline-editor {

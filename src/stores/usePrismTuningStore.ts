@@ -7,7 +7,9 @@ import { invoke } from "@tauri-apps/api/core";
 import { useDatapackStore } from "./useDatapackStore.js";
 import { useSettingsStore } from "./useSettingsStore.js";
 import { prismTuningDatapack } from "./prismTuningDatapack.js";
+import { useMdfModeStore } from "./useMdfModeStore.js";
 import { versionMetadata } from "../util.js";
+import { parseDensityFunctionWithMdfMode } from "../util/moreDensityFunctions.js";
 import bundledPresetPackUrl from "../assets/prism-worldgen-lab-presets.json?url";
 import bundledAnnotationPackUrl from "../assets/prism-worldgen-lab-annotations.json?url";
 
@@ -128,8 +130,9 @@ function settingKey(path: JsonPath): string {
 function registerRuntimeResource(resource: PrismTuningResource, data: unknown) {
     const id = Identifier.parse(resource.id);
     if (resource.kind === "density_function") {
+        const mdfModeStore = useMdfModeStore();
         const densityFunction = new DensityFunction.HolderHolder(
-            Holder.parser(WorldgenRegistries.DENSITY_FUNCTION, DensityFunction.fromJson)(data)
+            Holder.parser(WorldgenRegistries.DENSITY_FUNCTION, obj => parseDensityFunctionWithMdfMode(obj, mdfModeStore.enabled))(data)
         );
         WorldgenRegistries.DENSITY_FUNCTION.register(id, densityFunction);
     } else {

@@ -8,6 +8,8 @@ import { updateUrlParam, versionMetadata } from "../util.js";
 import { useI18n } from "vue-i18n";
 import { prismTuningDatapack } from "./prismTuningDatapack.js";
 import { OptionalUrlDatapack } from "./optionalUrlDatapack.js";
+import { useMdfModeStore } from "./useMdfModeStore.js";
+import { parseDensityFunctionWithMdfMode } from "../util/moreDensityFunctions.js";
 
 type DatapackEntry = {
     datapack: Datapack;
@@ -23,6 +25,7 @@ export const useDatapackStore = defineStore('datapacks', () => {
 
     const i18n = useI18n()
     const settingsStore = useSettingsStore()
+    const mdfModeStore = useMdfModeStore()
 
     const metadata = versionMetadata[settingsStore.mc_version];
     const vanillaDatapack = Datapack.fromZipUrl(`./vanilla_datapacks/vanilla_${metadata.vanillaDatapack}.zip`, metadata.datapackFormat)
@@ -136,7 +139,7 @@ export const useDatapackStore = defineStore('datapacks', () => {
 
     async function reloadDatapack() {
         const promises: Promise<void>[] = []
-        promises.push(registerType(ResourceLocation.WORLDGEN_DENSITY_FUNCTION, WorldgenRegistries.DENSITY_FUNCTION, (json) => new DensityFunction.HolderHolder(Holder.parser(WorldgenRegistries.DENSITY_FUNCTION, DensityFunction.fromJson)(json))))
+        promises.push(registerType(ResourceLocation.WORLDGEN_DENSITY_FUNCTION, WorldgenRegistries.DENSITY_FUNCTION, (json) => new DensityFunction.HolderHolder(Holder.parser(WorldgenRegistries.DENSITY_FUNCTION, obj => parseDensityFunctionWithMdfMode(obj, mdfModeStore.enabled))(json))))
         promises.push(registerType(ResourceLocation.WORLDGEN_NOISE, WorldgenRegistries.NOISE, NoiseParameters.fromJson))
         promises.push(registerType(ResourceLocation.WORLDGEN_STRUCTURE_SET, StructureSet.REGISTRY, StructureSet.fromJson))
         promises.push(registerType(ResourceLocation.WORLDGEN_TEMPLATE_POOL, StructureTemplatePool.REGISTRY, StructureTemplatePool.fromJson))
@@ -184,6 +187,8 @@ export const useDatapackStore = defineStore('datapacks', () => {
         tuningListeners.add(listener)
         return () => tuningListeners.delete(listener)
     }
+
+    watch(() => mdfModeStore.enabled, notifyTuningChanged)
 
     async function removeDatapack(id: number) {
         if (id <= 0 || id >= datapacks.length) return

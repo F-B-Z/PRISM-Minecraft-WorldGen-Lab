@@ -4,6 +4,7 @@ declare const self: ServiceWorkerGlobalScope;
 export { };
 
 import { Climate, DensityFunction, WorldgenRegistries, Identifier, Holder, NoiseGeneratorSettings, RandomState, NoiseParameters, BiomeSource } from "deepslate"
+import { parseDensityFunctionWithMdfMode, withMdfDensityFunctionParser } from "../util/moreDensityFunctions.js"
 
 type CaveViewMode = "off" | "layered" | "full"
 
@@ -24,13 +25,15 @@ class MultiNoiseCalculator {
 		surfaceBiomes: boolean
 		caveView: CaveViewMode
 		generationVersion: number
+		mdfMode: boolean
 	} = {
 		y: 0,
 		seed: BigInt(0),
 		generationVersion: -1,
 		projectDown: true,
 		surfaceBiomes: true,
-		caveView: "off"
+		caveView: "off",
+		mdfMode: false
 	}
 
 	private taskQueue: any[] = []
@@ -51,6 +54,7 @@ class MultiNoiseCalculator {
 		project_down: boolean
 		surface_biomes?: boolean
 		cave_view?: CaveViewMode
+		mdfMode?: boolean
 	}) {
 		this.state.seed = update.seed ?? this.state.seed
 		this.state.y = update.y ?? this.state.y
@@ -60,6 +64,7 @@ class MultiNoiseCalculator {
 		this.state.generationVersion = update.generationVersion ?? this.state.generationVersion
 		this.state.levelMaxY = update.levelMaxY ?? this.state.levelMaxY
 		this.state.levelMinY = update.levelMinY ?? this.state.levelMinY
+		this.state.mdfMode = update.mdfMode ?? this.state.mdfMode
 
 		if (update.biomeSourceJson) {
 			this.state.biomeSource = BiomeSource.fromJson(update.biomeSourceJson)
@@ -69,7 +74,7 @@ class MultiNoiseCalculator {
 		if (update.densityFunctions) {
 			WorldgenRegistries.DENSITY_FUNCTION.clear()
 			for (const id in update.densityFunctions) {
-				const df = new DensityFunction.HolderHolder(Holder.parser(WorldgenRegistries.DENSITY_FUNCTION, DensityFunction.fromJson)(update.densityFunctions[id]))
+				const df = new DensityFunction.HolderHolder(Holder.parser(WorldgenRegistries.DENSITY_FUNCTION, obj => parseDensityFunctionWithMdfMode(obj, this.state.mdfMode))(update.densityFunctions[id]))
 				WorldgenRegistries.DENSITY_FUNCTION.register(Identifier.parse(id), df)
 			}
 		}
@@ -83,7 +88,10 @@ class MultiNoiseCalculator {
 		}
 
 		if (update.noiseGeneratorSettingsJson) {
-			this.state.noiseGeneratorSettings = NoiseGeneratorSettings.fromJson(update.noiseGeneratorSettingsJson)
+			this.state.noiseGeneratorSettings = withMdfDensityFunctionParser(
+				this.state.mdfMode,
+				() => NoiseGeneratorSettings.fromJson(update.noiseGeneratorSettingsJson)
+			)
 			this.state.randomState = new RandomState(this.state.noiseGeneratorSettings, this.state.seed)
 			this.state.sampler = Climate.Sampler.fromRouter(this.state.randomState.router)
 		}
