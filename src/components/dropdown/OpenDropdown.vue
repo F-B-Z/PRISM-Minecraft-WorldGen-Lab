@@ -28,10 +28,22 @@ const disabledRecents = ref<string[]>([])
 const errorMessage = ref<string | undefined>()
 
 const modrinthPopup = ref<any>(null)
-const publicJarRecents = computed(() => recentStore.recents.filter(recent =>
+const publicResourceRecents = computed(() => recentStore.recents.filter(recent =>
     recent.modrinthSlug !== undefined
-    || (recent.fileHandle?.kind === "file" && recent.fileHandle.name.toLowerCase().endsWith(".jar"))
+    || recent.fileHandle?.kind === "directory"
+    || (recent.fileHandle?.kind === "file" && isPackArchive(recent.fileHandle.name))
 ))
+
+function sourceTypeForFileName(fileName: string) {
+    return fileName.toLowerCase().endsWith(".jar") ? "mod_jar" : "datapack_zip"
+}
+
+function recentType(recent: StoredDatapack) {
+    if (recent.modrinthSlug) return "modrinth"
+    if (recent.fileHandle?.kind === "directory") return "folder"
+    if (recent.fileHandle?.kind === "file") return recent.fileHandle.name.toLowerCase().endsWith(".jar") ? "mod jar" : "datapack zip"
+    return undefined
+}
 
 async function loadRecent(recent: StoredDatapack) {
     if (recent.modrinthSlug !== undefined) {
@@ -62,10 +74,10 @@ async function loadRecent(recent: StoredDatapack) {
                 datapack = Datapack.fromZipFile(file, versionMetadata[settingsStore.mc_version].datapackFormat)
                 // if old version stored local file system handle, store it in opfs now
                 if (!recent.storedInOpfs){
-                    EventTracker.track(`add_datapack/zip/from_recent/upgraded`)
+                    EventTracker.track(`add_datapack/${sourceTypeForFileName(file.name)}/from_recent/upgraded`)
                     recentStore.storeAndAddRecent(file, datapack)
                 } else {
-                    EventTracker.track(`add_datapack/zip/from_recent`)
+                    EventTracker.track(`add_datapack/${sourceTypeForFileName(file.name)}/from_recent`)
                     recentStore.addRecentFileHandle(handle, datapack)
                 }
             } else {
@@ -73,7 +85,7 @@ async function loadRecent(recent: StoredDatapack) {
                 recentStore.addRecentFileHandle(handle, datapack)
                 EventTracker.track(`add_datapack/folder/from_recent`)
             }
-            datapackStore.addDatapack(datapack)
+            datapackStore.addDatapack(datapack, handle.kind === "file" ? sourceTypeForFileName(handle.name) : "datapack_folder")
         } catch (e){
             if (e instanceof DOMException){
                 if (recent.storedInOpfs){
@@ -94,19 +106,23 @@ async function loadRecent(recent: StoredDatapack) {
 async function loadPreset(preset: Preset) {
     EventTracker.track(`add_datapack/built_in/${preset.id}`)
     const datapack = Datapack.fromZipUrl(preset.url, versionMetadata[settingsStore.mc_version].datapackFormat)
-    datapackStore.addDatapack(datapack)
+    datapackStore.addDatapack(datapack, "builtin")
     emit('close')
 }
 
 
-async function loadZip(event: MouseEvent) {
-    async function addZipDatapack(file: File) {
-        if (!file.name.toLowerCase().endsWith(".jar")) {
+async function loadArchive(event: MouseEvent, mode: "mod_jar" | "datapack_zip") {
+    const extension = mode === "mod_jar" ? ".jar" : ".zip"
+    const pickerDescription = mode === "mod_jar" ? "Minecraft mod jar" : "Minecraft datapack zip"
+    const mimeType = mode === "mod_jar" ? "application/java-archive" : "application/zip"
+
+    async function addArchiveDatapack(file: File) {
+        if (!file.name.toLowerCase().endsWith(extension)) {
             return undefined;
         }
-        EventTracker.track(`add_datapack/jar`)
+        EventTracker.track(`add_datapack/${mode}`)
         const datapack = Datapack.fromZipFile(file, versionMetadata[settingsStore.mc_version].datapackFormat)
-        datapackStore.addDatapack(datapack)
+        datapackStore.addDatapack(datapack, mode)
         return datapack
     }
 
@@ -116,9 +132,9 @@ async function loadZip(event: MouseEvent) {
             [fileHandle] = await window.showOpenFilePicker({
                 types: [
                     {
-                        description: "Minecraft mod jar",
+                        description: pickerDescription,
                         accept: {
-                            "application/java-archive": [".jar"]
+                            [mimeType]: [extension]
                         }
                     }
                 ]
@@ -127,7 +143,7 @@ async function loadZip(event: MouseEvent) {
         } finally {
             if (fileHandle !== undefined) {
                 const file = await fileHandle.getFile()
-                const datapack = await addZipDatapack(file)
+                const datapack = await addArchiveDatapack(file)
                 if (datapack) {
                     recentStore.storeAndAddRecent(file, datapack)
                 }
@@ -136,11 +152,11 @@ async function loadZip(event: MouseEvent) {
     } else {
         const input = document.createElement('input') as HTMLInputElement
         input.type = 'file'
-        input.accept = '.jar'
+        input.accept = extension
 
         input.onchange = async (evt) => {
             const file = (evt.target as HTMLInputElement).files![0]
-            const datapack = await addZipDatapack(file)
+            const datapack = await addArchiveDatapack(file)
             if (datapack) {
                 recentStore.storeAndAddRecent(file, datapack)
             }
@@ -149,6 +165,14 @@ async function loadZip(event: MouseEvent) {
         input.click()
     }
     emit('close')
+}
+
+async function loadModJar(event: MouseEvent) {
+    await loadArchive(event, "mod_jar")
+}
+
+async function loadDatapackZip(event: MouseEvent) {
+    await loadArchive(event, "datapack_zip")
 }
 
 async function loadFolder(event: MouseEvent) {
@@ -176,7 +200,7 @@ async function loadFolder(event: MouseEvent) {
 
     if (datapack !== undefined) {
         EventTracker.track(`add_datapack/folder`)
-        datapackStore.addDatapack(datapack)
+        datapackStore.addDatapack(datapack, "datapack_folder")
     }
     emit('close')
 }
@@ -244,7 +268,9 @@ const PRESET_DATAPACKS = computed(() => {
 <template>
     <Dropdown>
         <div class="status" v-if="errorMessage">{{ errorMessage }}</div>
-        <DropdownIconEntry icon="fa-file-zipper" @click="loadZip" @keypress.enter="loadZip">Load mod jar</DropdownIconEntry>
+        <DropdownIconEntry icon="fa-file-zipper" @click="loadModJar" @keypress.enter="loadModJar">Load mod jar</DropdownIconEntry>
+        <DropdownIconEntry icon="fa-file-import" @click="loadDatapackZip" @keypress.enter="loadDatapackZip">Load datapack zip</DropdownIconEntry>
+        <DropdownIconEntry icon="fa-folder-open" @click="loadFolder" @keypress.enter="loadFolder">Load datapack folder</DropdownIconEntry>
         <DropdownIconEntry image="/images/modrinth.svg" @click="openModrinth" @keypress.enter="openModrinth">{{ i18n.t('dropdown.add.modrinth') }}</DropdownIconEntry>
         <div class="spacer" v-if="PRESET_DATAPACKS.length > 0"></div>
         <div class="title" v-if="PRESET_DATAPACKS.length > 0">{{ i18n.t('dropdown.add.built_in.title') }} </div>
@@ -257,10 +283,10 @@ const PRESET_DATAPACKS = computed(() => {
             {{ i18n.t('dropdown.add.recents.enable') }}
             <div class="note">{{ i18n.t('dropdown.add.recents.enable.note') }}</div>
         </div>
-        <div class="empty" v-if="recentStore.avalible && recentStore.enabled && publicJarRecents.length === 0">--- {{
+        <div class="empty" v-if="recentStore.avalible && recentStore.enabled && publicResourceRecents.length === 0">--- {{
             i18n.t('dropdown.add.recents.empty') }} ---</div>
         <div class="empty small" v-if="!recentStore.avalible">{{ i18n.t('dropdown.add.recents.unavailable') }}</div>
-        <DropdownRecentsEntry v-for="recent in publicJarRecents" :image="recent.img" :title="recent.fileHandle?.name ?? recent.modrinthSlug" :type="recent.modrinthSlug ? 'modrinth' : recent.fileHandle?.kind"
+        <DropdownRecentsEntry v-for="recent in publicResourceRecents" :image="recent.img" :title="recent.fileHandle?.name ?? recent.modrinthSlug" :type="recentType(recent)"
             @click="loadRecent(recent)" @keypress.enter="loadRecent(recent)" :disabled="recent.modrinthSlug !== undefined && disabledRecents.includes(recent.modrinthSlug)"> {{ recent.text }} </DropdownRecentsEntry>
     </Dropdown>
     <Popup ref="modrinthPopup" :title="i18n.t('modrinth.title')">

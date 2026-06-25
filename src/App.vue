@@ -15,6 +15,7 @@ const sidebarWidth = ref(26)
 const showIntro = ref(false)
 const hideIntroNextStartup = ref(false)
 const introStorageKey = 'prism-worldgen-lab.hide-public-intro.v1'
+const isPublicBuild = __PRISM_PUBLIC_BUILD__
 
 const uiStore = useUiStore()
 
@@ -69,7 +70,7 @@ onBeforeMount(async () => {
 
 onMounted(() => {
   window.addEventListener('prism-worldgen-lab-help', handleHelpEvent)
-  if (localStorage.getItem(introStorageKey) !== '1') {
+  if (isPublicBuild && localStorage.getItem(introStorageKey) !== '1') {
     openIntro()
   }
 })
@@ -92,7 +93,7 @@ onBeforeUnmount(() => {
       @pointerdown="startSidebarResize"
     ></div>
     <MainMap />
-    <PrismUpdatePrompt />
+    <PrismUpdatePrompt v-if="isPublicBuild" />
     <div v-if="showIntro" class="intro-backdrop">
       <section class="intro-dialog" role="dialog" aria-modal="true" aria-labelledby="intro-title">
         <header>

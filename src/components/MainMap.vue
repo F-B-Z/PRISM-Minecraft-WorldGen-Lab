@@ -49,6 +49,7 @@ const show_compare_difference = ref(false)
 const compare_difference_filter = ref<DifferenceFilterMode>("all")
 const show_clip_warning = ref(false)
 const compare_difference_stats = ref<DifferenceStats>({ total: 0, changed: 0, changedPercent: 0, maxDelta: 0, averageDelta: 0, clipCount: 0 })
+const show_reset_to_player = ref(false)
 
 watch(show_graticule, (value) => {
     if (value) {
@@ -120,6 +121,7 @@ onMounted(() => {
         maxZoom: 1,
         center: [0, 0],
         zoomControl: false,
+        attributionControl: false,
         crs: L.CRS.Simple
     })
 
@@ -174,9 +176,13 @@ onMounted(() => {
     map.on("moveend", (evt) => {
         setTimeout(updateMarkers, 5)
         syncCompareFromMain()
+        updateResetToPlayerVisibility()
     })
 
-    map.on("zoomend", () => syncCompareFromMain())
+    map.on("zoomend", () => {
+        syncCompareFromMain()
+        updateResetToPlayerVisibility()
+    })
 
     graticule = new Graticule()
 
@@ -352,6 +358,24 @@ function updateSpawnMarker(){
         spawnMarker.removeFrom(map)
     }
 
+    updateResetToPlayerVisibility()
+}
+
+function updateResetToPlayerVisibility() {
+    if (!map || !spawnMarker) {
+        show_reset_to_player.value = false
+        return
+    }
+
+    const hasPlayerMarker = map.hasLayer(spawnMarker)
+    show_reset_to_player.value = hasPlayerMarker && !map.getBounds().pad(-0.08).contains(spawnMarker.getLatLng())
+}
+
+function resetCameraToPlayer() {
+    if (!map || !spawnMarker || !map.hasLayer(spawnMarker)) return
+    map.setView(spawnMarker.getLatLng(), map.getZoom(), { animate: true })
+    syncCompareFromMain()
+    setTimeout(updateResetToPlayerVisibility, 200)
 }
 
 function syncMapView(source: L.Map, target: L.Map) {
@@ -610,6 +634,16 @@ watch([show_compare_difference, compare_difference_filter, show_clip_warning], (
                 blue lower · red higher · magenta clips
             </div>
         </div>
+        <button
+            v-if="show_reset_to_player"
+            type="button"
+            class="reset-camera"
+            :title="i18n.t('map.action.reset_camera_to_player')"
+            @click="resetCameraToPlayer"
+        >
+            <font-awesome-icon icon="fa-location-dot" />
+            <span>{{ i18n.t('map.action.reset_camera_to_player') }}</span>
+        </button>
     </div>
     <BiomeTooltip id="tooltip" v-if="show_tooltip" :style="{ left: tooltip_left + 'px', top: tooltip_top + 'px' }"
         :biome="tooltip_biome" :pos="tooltip_position" />
@@ -821,6 +855,33 @@ watch([show_compare_difference, compare_difference_filter, show_clip_warning], (
     margin-top: 0.25rem;
     color: rgba(226, 250, 255, 0.74);
     font-size: 0.64rem;
+}
+
+.reset-camera {
+    position: absolute;
+    z-index: 620;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.42rem 0.72rem;
+    border: 1px solid rgba(159, 243, 255, 0.58);
+    border-radius: 999px;
+    background: rgba(6, 39, 51, 0.88);
+    color: var(--prism-text);
+    box-shadow: 0 0.55rem 1.3rem rgba(0, 0, 0, 0.24);
+    font-size: 0.78rem;
+    line-height: 1;
+    backdrop-filter: blur(5px);
+}
+
+.reset-camera:hover,
+.reset-camera:focus-visible {
+    background: var(--prism-active);
+    color: rgb(2, 17, 22);
+    border-color: var(--prism-accent-2);
 }
 
 #tooltip {

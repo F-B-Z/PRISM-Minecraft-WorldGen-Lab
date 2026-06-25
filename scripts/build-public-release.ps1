@@ -274,12 +274,15 @@ $env:TAURI_SIGNING_PRIVATE_KEY = (Get-Content -LiteralPath $SigningKeyPath -Raw)
 
 if (-not $SkipBuild) {
   Push-Location $toolRoot
+  $oldPublicBuildFlag = $env:VITE_PRISM_PUBLIC_BUILD
   try {
+    $env:VITE_PRISM_PUBLIC_BUILD = "true"
     & npx.cmd tauri build --ci
     if ($LASTEXITCODE -ne 0) {
       throw "Tauri desktop build failed with exit code $LASTEXITCODE"
     }
   } finally {
+    $env:VITE_PRISM_PUBLIC_BUILD = $oldPublicBuildFlag
     Pop-Location
   }
 }

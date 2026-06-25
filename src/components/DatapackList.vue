@@ -33,6 +33,7 @@ function clearLoadedPacks() {
                     :datapack="datapack.datapack"
                     :key="datapack.key"
                     :removable="datapack.removable ?? false"
+                    :source-type="datapack.sourceType"
                     @close="store.removeDatapack(store.datapacks.indexOf(datapack))"
                 />
             </Suspense>

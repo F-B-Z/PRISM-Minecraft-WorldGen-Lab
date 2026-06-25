@@ -104,6 +104,7 @@
     "toggle_sidebar.title": "Toggle Sidebar",
     "map.info.structures_hidden": "Some structures are hidden. Zoom in to see more.",
     "map.info.teleport_command_copied": "Teleport Command Copied",
+    "map.action.reset_camera_to_player": "Reset camera to player",
     "map.error.structures_unsupported": "Some selected structures are unsupported! Sorry.",
     "map.tooltip.spawn": "Spawn Point",
     "map.yslider.aria-label": "Y Level",

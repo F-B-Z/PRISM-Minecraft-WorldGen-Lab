@@ -16,6 +16,7 @@ type DatapackEntry = {
     key: number;
     id?: string;
     removable?: boolean;
+    sourceType?: "builtin" | "datapack_zip" | "datapack_folder" | "mod_jar" | "modrinth" | "instance_mods";
 }
 
 
@@ -38,7 +39,7 @@ export const useDatapackStore = defineStore('datapacks', () => {
     const tuningListeners = new Set<() => void>()
 
     const ds: DatapackEntry[] = [
-        { datapack: vanillaDatapack, key: 0, removable: false }
+        { datapack: vanillaDatapack, key: 0, removable: false, sourceType: "builtin" }
     ]
 
     if (datapacksParam !== undefined) {
@@ -46,7 +47,7 @@ export const useDatapackStore = defineStore('datapacks', () => {
             if (id === "prism:lithosphere_v2" || id === "prism:still_life_v2") continue
             const promise = getDatapackFromId(id)
             if (promise === undefined) continue
-            ds.push({datapack: promise, key: ++last_key, id: id})
+            ds.push({datapack: promise, key: ++last_key, id: id, sourceType: "modrinth"})
         }
     }
 
@@ -162,14 +163,14 @@ export const useDatapackStore = defineStore('datapacks', () => {
         return WorldgenStructure.fromJson(obj)
     }
 
-    function addDatapack(datapack: Datapack) {
-        datapacks.push({ datapack: datapack, key: ++last_key, removable: true })
+    function addDatapack(datapack: Datapack, sourceType: DatapackEntry["sourceType"] = "datapack_zip") {
+        datapacks.push({ datapack: datapack, key: ++last_key, removable: true, sourceType })
         notifyTuningChanged()
     }
 
     function addInstanceModDatapacks(modDatapacks: Datapack[]) {
         referenceJarsEnabled.value = false
-        datapacks.splice(1, datapacks.length - 1, ...modDatapacks.map(datapack => ({ datapack, key: ++last_key, removable: true })))
+        datapacks.splice(1, datapacks.length - 1, ...modDatapacks.map(datapack => ({ datapack, key: ++last_key, removable: true, sourceType: "instance_mods" as const })))
         notifyTuningChanged()
     }
 
@@ -206,7 +207,7 @@ export const useDatapackStore = defineStore('datapacks', () => {
     async function addModrinthDatapack(slug: string){
         const url = await getModrinthUrl(slug)
         const datapack = Datapack.fromZipUrl(url, versionMetadata[settingsStore.mc_version].datapackFormat)
-        datapacks.push({ datapack: datapack, key: ++last_key, id: `modrinth:${slug}` })
+        datapacks.push({ datapack: datapack, key: ++last_key, id: `modrinth:${slug}`, sourceType: "modrinth" })
         notifyTuningChanged()
         return datapack
     }

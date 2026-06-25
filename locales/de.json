@@ -41,6 +41,7 @@
     "map.error.structures_unsupported": "Einige ausgewählte Strukturen werden nicht unterstützt! Sorry.",
     "map.info.structures_hidden": "Einige Strukturen werden nicht angezeigt. Heranzoomen um mehr zu sehen.",
     "map.info.teleport_command_copied": "Teleport-Befehl kopiert",
+    "map.action.reset_camera_to_player": "Kamera zum Spieler zurücksetzen",
     "map.setting.graticule": "Zeige das Regionsgitter",
     "map.setting.hillshade": "Schattierung aktivieren",
     "map.setting.project": "Verschiebe Position nach unten zur Oberfläche",

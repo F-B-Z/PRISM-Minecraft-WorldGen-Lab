@@ -11,7 +11,8 @@ import { useI18n } from 'vue-i18n';
 
     const props = defineProps({
         datapack: Object,
-        removable: Boolean
+        removable: Boolean,
+        sourceType: String
     })
 
     const settings = useSettingsStore()
@@ -22,6 +23,24 @@ import { useI18n } from 'vue-i18n';
     const mcMeta = await datapack.getMcmeta()
     const supported = computed(() => mcMeta !== undefined ? PackMcmeta.MatchFormatRange(mcMeta.formats, versionMetadata[settings.mc_version].datapackFormat) : false)
     const desciption = TextComponent.parse(mcMeta?.description ?? "")
+    const sourceLabel = computed(() => {
+        switch (props.sourceType) {
+            case "mod_jar":
+                return "Mod JAR"
+            case "datapack_zip":
+                return "Datapack ZIP"
+            case "datapack_folder":
+                return "Datapack Folder"
+            case "modrinth":
+                return "Modrinth"
+            case "instance_mods":
+                return "Mod Folder"
+            case "builtin":
+                return "Built-in"
+            default:
+                return "Resource"
+        }
+    })
 
 </script>
 
@@ -31,6 +50,7 @@ import { useI18n } from 'vue-i18n';
         <div class="description">
             <MinecraftText :component="desciption" />
         </div>
+        <span class="source_type">{{ sourceLabel }}</span>
         <font-awesome-icon v-if="removable" icon="fa-xmark" class="close_button" tabindex="0" :title="i18n.t('datapack_list.remove_datapack.title')" @click="$emit('close')" @keypress.enter="$emit('close')" />
     </div>
 </template>
@@ -77,6 +97,24 @@ import { useI18n } from 'vue-i18n';
         font-family: sans-serif;
         font-size: 16px;
         line-height: 1.2rem;
+    }
+
+    .source_type {
+        position: absolute;
+        left: 4.35rem;
+        bottom: 0.22rem;
+        max-width: calc(100% - 6.7rem);
+        overflow: hidden;
+        padding: 0.05rem 0.35rem;
+        border: 1px solid rgba(126, 230, 238, 0.28);
+        border-radius: 999px;
+        background: rgba(5, 27, 34, 0.82);
+        color: var(--prism-accent-2);
+        font-size: 0.62rem;
+        line-height: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        pointer-events: none;
     }
 
     .close_button {

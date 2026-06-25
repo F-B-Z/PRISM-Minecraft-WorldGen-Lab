@@ -5,6 +5,9 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    __PRISM_PUBLIC_BUILD__: JSON.stringify(process.env.VITE_PRISM_PUBLIC_BUILD === 'true')
+  },
   plugins: [
     vue(),
     VueI18nPlugin({
