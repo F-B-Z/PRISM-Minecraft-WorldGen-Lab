@@ -211,7 +211,7 @@ onBeforeUnmount(() => unsubscribeDatapacks?.());
 
         <label class="mdf-mode-toggle" title="Switch the editor and preview parser to More Density Functions compatibility mode.">
             <input v-model="mdfModeStore.enabled" type="checkbox" />
-            <span>MDF Mode {{ mdfModeStore.enabled ? '[x]' : '[ ]' }}</span>
+            <span>MDF Mode</span>
         </label>
         <div v-if="mdfModeStore.enabled" class="mdf-mode-note">
             More Density Functions compatibility is active. Core math and coordinate functions are interpreted; complex MDF noise/image functions are approximate or fall back to zero until implemented.
