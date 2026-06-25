@@ -2517,7 +2517,7 @@ dependencies = [
 
 [[package]]
 name = "prism_worldgen_lab"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "log",
  "serde",
