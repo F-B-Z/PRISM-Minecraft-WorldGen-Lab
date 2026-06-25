@@ -5,7 +5,7 @@ import LocaleChanger from './LocaleChanger.vue';
 import TipMessage from './TipMessage.vue';
 
 const showTip = ref(false);
-const sourceUrl = "https://github.com/fabi9/PRISM-Minecraft-WorldGen-Lab";
+const sourceUrl = "https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab";
 const discordUrl = "https://discord.gg/md4sMp5nAy";
 
 async function openExternal(url: string) {

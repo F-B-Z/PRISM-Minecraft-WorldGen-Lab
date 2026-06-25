@@ -15,13 +15,13 @@ Product:
 - Name: PRISM Worldgen Lab
 - Publisher: FBZ / PRISM
 - Repository: https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab
-- Release: https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab/releases/tag/v0.1.0
+- Release: https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab/releases/tag/v0.1.1
 
 Artifacts to submit if flagged:
 
-- PRISM-Worldgen-Lab-0.1.0-portable-windows-x64.zip
-- installer/PRISM-Worldgen-Lab-0.1.0-windows-x64-setup.exe
-- installer/PRISM-Worldgen-Lab-0.1.0-windows-x64.msi
+- PRISM-Worldgen-Lab-0.1.1-portable-windows-x64.zip
+- installer/PRISM-Worldgen-Lab-0.1.1-windows-x64-setup.exe
+- installer/PRISM-Worldgen-Lab-0.1.1-windows-x64.msi
 
 
 Notes:

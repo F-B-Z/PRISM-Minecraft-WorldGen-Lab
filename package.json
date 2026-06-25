@@ -1,7 +1,7 @@
 {
   "name": "prism-worldgen-lab",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "Local P.R.I.S.M. worldgen preview lab forked from jacobsjo/mc-datapack-map.",
   "type": "module",
   "scripts": {

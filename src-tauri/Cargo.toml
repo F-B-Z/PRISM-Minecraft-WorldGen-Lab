@@ -1,6 +1,6 @@
 [package]
 name = "prism_worldgen_lab"
-version = "0.1.0"
+version = "0.1.1"
 description = "Local P.R.I.S.M. worldgen preview and datapack tuning lab."
 authors = ["P.R.I.S.M."]
 license = "MIT"
