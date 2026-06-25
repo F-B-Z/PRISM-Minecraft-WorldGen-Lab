@@ -1,6 +1,7 @@
 # PRISM Worldgen Lab
 
-Session: codex-20260612-px / codex-20260624-pb
+For live feedback/discussions, please join my PRISM Development Discord :)
+https://discord.gg/vsjgvwu82
 
 Local P.R.I.S.M. worldgen experiment app based on
 [`jacobsjo/mc-datapack-map`](https://github.com/jacobsjo/mc-datapack-map).
