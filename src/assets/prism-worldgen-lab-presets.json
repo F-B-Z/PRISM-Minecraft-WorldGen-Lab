@@ -1,0 +1,1441 @@
+{
+  "schema": "prism-worldgen-lab.presets.v1",
+  "version": 1,
+  "generatedAt": "2026-06-18",
+  "appliesTo": "Lithosphere worldgen (Minecraft 1.21.1) - PRISM Worldgen Lab",
+  "note": "Each preset is applied on top of the LITHOSPHERE DEFAULTS: the loader must first reset every resource/pointer it is about to touch back to default, then apply the overrides. Presets only touch verified-safe leaves within documented bounds (see docs/lithosphere-worldgen-notes.md). Mountains A is capped at 0.05 (DANGER above).",
+  "groups": [
+    "Lakes",
+    "Cliffs",
+    "Rivers",
+    "Continents",
+    "Mountains",
+    "Caves",
+    "World base",
+    "Themes"
+  ],
+  "presets": [
+    {
+      "id": "lakes-off",
+      "name": "Lakes: Off",
+      "group": "Lakes",
+      "description": "Basin frequency very low - almost no lakes.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "lakes-fewer",
+      "name": "Lakes: Fewer",
+      "group": "Lakes",
+      "description": "Fewer, larger basins.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "lakes-more",
+      "name": "Lakes: More",
+      "group": "Lakes",
+      "description": "More lakes (verified safe lever).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.55
+        }
+      ]
+    },
+    {
+      "id": "lakes-many",
+      "name": "Lakes: Many",
+      "group": "Lakes",
+      "description": "Many lakes, no mountain damage.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.7
+        }
+      ]
+    },
+    {
+      "id": "lakes-very-many",
+      "name": "Lakes: Very Many",
+      "group": "Lakes",
+      "description": "Lake-heavy world.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.9
+        }
+      ]
+    },
+    {
+      "id": "lakes-extreme",
+      "name": "Lakes: Extreme",
+      "group": "Lakes",
+      "description": "Lakes everywhere (stress test).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "lakes-deep",
+      "name": "Lakes: Deep",
+      "group": "Lakes",
+      "description": "Default count, deeper basins.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.45
+        }
+      ]
+    },
+    {
+      "id": "lakes-very-deep",
+      "name": "Lakes: Very Deep",
+      "group": "Lakes",
+      "description": "Deep basins.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.6
+        }
+      ]
+    },
+    {
+      "id": "lakes-shallow",
+      "name": "Lakes: Shallow",
+      "group": "Lakes",
+      "description": "Shallow ponds.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.15
+        }
+      ]
+    },
+    {
+      "id": "lakes-many-deep",
+      "name": "Lakes: Many + Deep",
+      "group": "Lakes",
+      "description": "Many and deep.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.8
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.5
+        }
+      ]
+    },
+    {
+      "id": "lakes-many-shallow",
+      "name": "Lakes: Many + Shallow",
+      "group": "Lakes",
+      "description": "Many shallow ponds.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.8
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.15
+        }
+      ]
+    },
+    {
+      "id": "lakes-big",
+      "name": "Lakes: Big basins",
+      "group": "Lakes",
+      "description": "Larger basins kept above threshold (xz low + base low).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.3
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "lakes-big-deep",
+      "name": "Lakes: Big + Deep",
+      "group": "Lakes",
+      "description": "Large deep lakes.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.3
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.3
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.5
+        }
+      ]
+    },
+    {
+      "id": "lakes-base-more",
+      "name": "Lakes: More (via base offset)",
+      "group": "Lakes",
+      "description": "Secondary amount lever - more.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.35
+        }
+      ]
+    },
+    {
+      "id": "lakes-base-fewer",
+      "name": "Lakes: Fewer (via base offset)",
+      "group": "Lakes",
+      "description": "Secondary amount lever - fewer.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.65
+        }
+      ]
+    },
+    {
+      "id": "cliffs-gentle",
+      "name": "Cliffs: Gentle",
+      "group": "Cliffs",
+      "description": "Low shoreline amplitude.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "cliffs-soft",
+      "name": "Cliffs: Soft",
+      "group": "Cliffs",
+      "description": "Slightly softer than default.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "cliffs-rough",
+      "name": "Cliffs: Rough",
+      "group": "Cliffs",
+      "description": "Taller cliffs.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "id": "cliffs-dramatic",
+      "name": "Cliffs: Dramatic",
+      "group": "Cliffs",
+      "description": "Max safe cliff height (0 clips verified).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "id": "cliffs-inland",
+      "name": "Cliffs: Inland",
+      "group": "Cliffs",
+      "description": "Cliffs sit further inland.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument1/spline/coordinate/argument1",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "id": "cliffs-at-water",
+      "name": "Cliffs: At water",
+      "group": "Cliffs",
+      "description": "Cliffs at the shoreline.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument1/spline/coordinate/argument1",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "cliffs-into-water",
+      "name": "Cliffs: Into water",
+      "group": "Cliffs",
+      "description": "Cliffs pushed into the water (most coverage).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument1/spline/coordinate/argument1",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "cliffs-sparse",
+      "name": "Cliffs: Sparse coverage",
+      "group": "Cliffs",
+      "description": "Less coastline is cliffy.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument2/argument1/input/argument2",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "cliffs-wide",
+      "name": "Cliffs: Wide coverage",
+      "group": "Cliffs",
+      "description": "More coastline is cliffy.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument2/argument1/input/argument2",
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "cliffs-fjords",
+      "name": "Cliffs: Fjord coast",
+      "group": "Cliffs",
+      "description": "Tall + wide + at-water = dramatic coast.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 1.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument2/argument1/input/argument2",
+          "value": 0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument1/spline/coordinate/argument1",
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "cliffs-minimal",
+      "name": "Cliffs: Minimal",
+      "group": "Cliffs",
+      "description": "Soft, sparse coast.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.3
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument2/argument1/input/argument2",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "rivers-deeper",
+      "name": "Rivers: Deeper",
+      "group": "Rivers",
+      "description": "Deeper valleys.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.65
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.65
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.65
+        }
+      ]
+    },
+    {
+      "id": "rivers-much-deeper",
+      "name": "Rivers: Canyons",
+      "group": "Rivers",
+      "description": "Deep canyons (bleeds into coast a bit).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.75
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.75
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.75
+        }
+      ]
+    },
+    {
+      "id": "rivers-shallower",
+      "name": "Rivers: Shallower",
+      "group": "Rivers",
+      "description": "Shallow rivers.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        }
+      ]
+    },
+    {
+      "id": "rivers-wider",
+      "name": "Rivers: Wider",
+      "group": "Rivers",
+      "description": "Wider carve band.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/points/2/location",
+          "value": 0.16
+        }
+      ]
+    },
+    {
+      "id": "rivers-narrower",
+      "name": "Rivers: Narrower",
+      "group": "Rivers",
+      "description": "Narrow rivers.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/points/2/location",
+          "value": 0.06
+        }
+      ]
+    },
+    {
+      "id": "rivers-denser",
+      "name": "Rivers: Denser network",
+      "group": "Rivers",
+      "description": "Finer river network (relocates).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/coordinate/argument/xz_scale",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "rivers-sparser",
+      "name": "Rivers: Sparser network",
+      "group": "Rivers",
+      "description": "Larger spacing (relocates).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/coordinate/argument/xz_scale",
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "rivers-deep-wide",
+      "name": "Rivers: Deep + wide",
+      "group": "Rivers",
+      "description": "Deep wide canyons.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.7
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.7
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.7
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/points/2/location",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "rivers-gentle",
+      "name": "Rivers: Gentle streams",
+      "group": "Rivers",
+      "description": "Shallow narrow streams.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/points/2/location",
+          "value": 0.06
+        }
+      ]
+    },
+    {
+      "id": "con-more-land",
+      "name": "Continents: More land",
+      "group": "Continents",
+      "description": "More land AREA (not relief).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.3
+        }
+      ]
+    },
+    {
+      "id": "con-much-more-land",
+      "name": "Continents: Much more land",
+      "group": "Continents",
+      "description": "Large continents (area).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.15
+        }
+      ]
+    },
+    {
+      "id": "con-max-land",
+      "name": "Continents: Maximum land",
+      "group": "Continents",
+      "description": "Very large continents; approaching the no-ocean floor - do NOT go past -1.0.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.1
+        }
+      ]
+    },
+    {
+      "id": "con-max-land-aggressive",
+      "name": "Continents: Maximum land (aggressive)",
+      "group": "Continents",
+      "description": "Near the safe floor (-1.05). Still leaves ocean; never reach -1.0/0.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.05
+        }
+      ]
+    },
+    {
+      "id": "con-max-land-flat",
+      "name": "Continents: Max land + flat",
+      "group": "Continents",
+      "description": "Max land area but flattened contrast so it does NOT add height (safe to combine with mountains).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.1
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "con-more-ocean",
+      "name": "Continents: More ocean",
+      "group": "Continents",
+      "description": "More sea.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.7
+        }
+      ]
+    },
+    {
+      "id": "con-archipelago",
+      "name": "Continents: Archipelago",
+      "group": "Continents",
+      "description": "Lots of small landmasses (never >= 0).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.85
+        }
+      ]
+    },
+    {
+      "id": "con-high-contrast",
+      "name": "Continents: High contrast",
+      "group": "Continents",
+      "description": "Deeper seas + higher land.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "id": "con-flat",
+      "name": "Continents: Low contrast / flat",
+      "group": "Continents",
+      "description": "Flatter, shallower seas.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "con-big-low",
+      "name": "Continents: Big + low relief",
+      "group": "Continents",
+      "description": "Big land area, flat profile.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.2
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "con-deep-oceans",
+      "name": "Continents: Deep oceans",
+      "group": "Continents",
+      "description": "Strong land/sea contrast.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument1",
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "mtn-gentle",
+      "name": "Mountains: Gentle hills",
+      "group": "Mountains",
+      "description": "Rounded low hills.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.02
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.01
+        }
+      ]
+    },
+    {
+      "id": "mtn-rolling",
+      "name": "Mountains: Rolling",
+      "group": "Mountains",
+      "description": "Rolling terrain.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.03
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "id": "mtn-taller-bulk",
+      "name": "Mountains: Taller (bulk)",
+      "group": "Mountains",
+      "description": "Higher base via B (forgiving).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.04
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "id": "mtn-tall-rounded",
+      "name": "Mountains: Tall + rounded",
+      "group": "Mountains",
+      "description": "Tall but not pointy (high B).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.03
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.18
+        }
+      ]
+    },
+    {
+      "id": "mtn-tall-peaks",
+      "name": "Mountains: Tall + peaks",
+      "group": "Mountains",
+      "description": "Tall with peaks (A near safe cap).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.045
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "mtn-jagged",
+      "name": "Mountains: Jagged (A = max safe)",
+      "group": "Mountains",
+      "description": "Sharp peaks. A=0.05 is the DANGER cap - do not exceed.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.05
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "id": "mtn-flatten",
+      "name": "Mountains: Flatten",
+      "group": "Mountains",
+      "description": "Minimal relief.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.015
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "id": "base-deep-oceans",
+      "name": "World: Deeper oceans",
+      "group": "World base",
+      "description": "Lower pedestal -> deeper seas. Note: coastal structures at the waterline can end up slightly underwater.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:basic_topography",
+          "pointer": "/argument/argument/argument1",
+          "value": 0.75
+        }
+      ]
+    },
+    {
+      "id": "base-flatter",
+      "name": "World: Flatter",
+      "group": "World base",
+      "description": "Higher pedestal -> flatter world.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:basic_topography",
+          "pointer": "/argument/argument/argument1",
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "caves-more",
+      "name": "Caves: More",
+      "group": "Caves",
+      "description": "HYPOTHESIS: higher caves_final intensity = more/stronger caves.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 9.5
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 9.5
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 9.5
+        }
+      ]
+    },
+    {
+      "id": "caves-many",
+      "name": "Caves: Many",
+      "group": "Caves",
+      "description": "HYPOTHESIS: heavy carving (stress test).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 11.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 11.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 11.0
+        }
+      ]
+    },
+    {
+      "id": "caves-fewer",
+      "name": "Caves: Fewer",
+      "group": "Caves",
+      "description": "HYPOTHESIS: lower intensity = fewer caves.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 5.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 5.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 5.0
+        }
+      ]
+    },
+    {
+      "id": "caves-minimal",
+      "name": "Caves: Minimal",
+      "group": "Caves",
+      "description": "HYPOTHESIS: sparse caves.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 3.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 3.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 3.0
+        }
+      ]
+    },
+    {
+      "id": "caverns-bigger",
+      "name": "Caves: Bigger caverns",
+      "group": "Caves",
+      "description": "HYPOTHESIS: taller + wider cavern cheese (y up, xz down).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument1/argument1/y_scale",
+          "value": 5.5
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument1/argument1/xz_scale",
+          "value": 0.6
+        }
+      ]
+    },
+    {
+      "id": "caverns-huge",
+      "name": "Caves: Huge caverns",
+      "group": "Caves",
+      "description": "HYPOTHESIS: large open caverns (size up + lower threshold).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument1/argument1/y_scale",
+          "value": 7.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument1/argument1/xz_scale",
+          "value": 0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument2",
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "id": "caverns-more",
+      "name": "Caves: More caverns",
+      "group": "Caves",
+      "description": "HYPOTHESIS: lower cavern threshold = more cavern volume.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument2",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "caverns-fewer",
+      "name": "Caves: Fewer caverns",
+      "group": "Caves",
+      "description": "HYPOTHESIS: higher threshold = fewer caverns.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument2",
+          "value": 0.65
+        }
+      ]
+    },
+    {
+      "id": "caves-cavern-heavy",
+      "name": "Caves: Cavern-dominant",
+      "group": "Caves",
+      "description": "HYPOTHESIS: caverns dominate over tunnels/tight caves.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 10.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 4.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 4.0
+        }
+      ]
+    },
+    {
+      "id": "caves-tunnel-heavy",
+      "name": "Caves: Tunnel-dominant",
+      "group": "Caves",
+      "description": "HYPOTHESIS: connecting tunnels dominate.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 10.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 4.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 4.0
+        }
+      ]
+    },
+    {
+      "id": "caves-tight",
+      "name": "Caves: Claustrophobic",
+      "group": "Caves",
+      "description": "HYPOTHESIS: tight winding caves dominate.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 10.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 4.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 4.0
+        }
+      ]
+    },
+    {
+      "id": "caves-open-airy",
+      "name": "Caves: Open & airy",
+      "group": "Caves",
+      "description": "HYPOTHESIS: big open systems (more + bigger caverns).",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument1/argument2",
+          "value": 9.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument1/argument2/argument2",
+          "value": 9.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/caves_final",
+          "pointer": "/argument/argument2/argument2",
+          "value": 9.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument2",
+          "value": 0.2
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:caves/cavern",
+          "pointer": "/argument/argument1/argument1/argument1/y_scale",
+          "value": 5.5
+        }
+      ]
+    },
+    {
+      "id": "theme-lakeland",
+      "name": "Theme: Lakeland",
+      "group": "Themes",
+      "description": "Many lakes, gentle rivers, a touch more land.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.8
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_depth",
+          "pointer": "/argument/argument/argument2/argument2",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_mask",
+          "pointer": "/argument/argument/spline/points/2/location",
+          "value": 0.14
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.25
+        }
+      ]
+    },
+    {
+      "id": "theme-highlands",
+      "name": "Theme: Highlands",
+      "group": "Themes",
+      "description": "Tall rounded mountains + rough coast.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.04
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.15
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "id": "theme-archipelago",
+      "name": "Theme: Archipelago",
+      "group": "Themes",
+      "description": "Small isles, dramatic coasts, scattered lakes.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:continents",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument2",
+          "value": -1.85
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.9
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument1/spline/coordinate/argument1",
+          "value": 0.3
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "theme-gentle-plains",
+      "name": "Theme: Gentle plains",
+      "group": "Themes",
+      "description": "Flat, soft coasts, shallow rivers.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.015
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 0.3
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.45
+        }
+      ]
+    },
+    {
+      "id": "theme-dramatic",
+      "name": "Theme: Dramatic world",
+      "group": "Themes",
+      "description": "Big relief, deep canyons, many lakes, sharp coast.",
+      "overrides": [
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument1/argument2",
+          "value": 0.045
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:topography_mountains",
+          "pointer": "/argument/argument/argument2/argument2/argument2/argument2",
+          "value": 0.12
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:coastal_cliffs",
+          "pointer": "/argument/argument/argument2/argument1/argument2/argument2",
+          "value": 1.0
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_c",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.7
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_g",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.7
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:river_valley_u",
+          "pointer": "/argument/argument/argument1",
+          "value": -0.7
+        },
+        {
+          "kind": "density_function",
+          "resource": "lithosphere:lakes_placement",
+          "pointer": "/argument/argument/spline/coordinate/argument2/argument1/argument1/argument1/spline/coordinate/argument2/argument1/xz_scale",
+          "value": 0.7
+        }
+      ]
+    }
+  ]
+}
