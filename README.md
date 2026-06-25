@@ -82,6 +82,27 @@ npx tauri signer generate -w "$env:USERPROFILE\Documents\PRISM Worldgen Lab\Sign
 The Windows installer is configured to use the official Microsoft Edge WebView2
 download bootstrapper if WebView2 is missing on a tester machine.
 
+Fresh unsigned Windows binaries may still trigger Microsoft Defender or
+SmartScreen reputation warnings. The release script therefore writes:
+
+- `SHA256SUMS.txt` for public hash verification
+- `MICROSOFT_DEFENDER_SUBMISSION.md` with the official Microsoft false-positive
+  submission details
+
+When a Windows Authenticode code-signing certificate is available, pass it to the
+release helper:
+
+```powershell
+$env:PRISM_CODESIGN_PFX_PASSWORD = "<pfx password>"
+npm run release:public -- `
+  -CodeSigningCertificatePath "C:\path\to\certificate.pfx" `
+  -OpenFolder
+```
+
+The helper signs the portable executable, NSIS installer, and MSI with SHA-256,
+timestamps the signatures, verifies them with `signtool.exe`, and keeps the
+Tauri updater signature aligned with the generated update artifact.
+
 The upstream app expects generated vanilla datapack zips under
 `public/vanilla_datapacks/`. If those are missing for a target Minecraft version,
 run:
