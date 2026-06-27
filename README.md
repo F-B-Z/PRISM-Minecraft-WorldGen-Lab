@@ -135,6 +135,18 @@ in the PRISM Lab header reopens the same guidance and lets testers re-enable it
 on startup. Desktop datapack exports are written to
 `Documents/PRISM Worldgen Lab/Datapacks` and the folder is opened immediately.
 
+### Current Public Beta Release Strategy
+
+Public releases are currently paused while the private PRISM Worldgen Lab Pro
+build is stabilized internally. The Community repository remains available as a
+useful worldgen preview and testing tool, and public-confirmed features will
+remain available in at least a basic form.
+
+Future public updates will be shipped as deliberate Community waves after
+maintainer approval, not as automatic mirrors of the private Pro build. Advanced
+production workflows are developed privately first and may later appear as Pro
+Preview, Pro, or Studio features.
+
 ## Near-Term Plan
 
 1. Keep the upstream map booting and building.
