@@ -16,10 +16,6 @@ https://github.com/F-B-Z/PRISM-Minecraft-WorldGen-Lab/releases/latest
 
 The desktop app checks for signed GitHub updates on startup and shows an update prompt when a newer release is available.
 
-Release operators should upload only public binaries, the updater `.sig`, and
-`latest.json` to GitHub Releases. `release-manifest.json` and files under
-`support/` are local release notes and must not be uploaded as release assets.
-
 ## What It Does
 
 - Preview Minecraft worldgen datapacks and compatible worldgen mod jars.
