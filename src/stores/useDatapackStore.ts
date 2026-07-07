@@ -71,6 +71,7 @@ export const useDatapackStore = defineStore('datapacks', () => {
         stillLifeReferenceJar.setPackVersion(metadata.datapackFormat)
 
         last_version = settingsStore.mc_version
+        notifyTuningChanged()
     })
 
     watch(datapacks, (new_datapacks) => {

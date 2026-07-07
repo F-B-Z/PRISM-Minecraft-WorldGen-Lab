@@ -291,10 +291,11 @@ $releaseRoot = [System.IO.Path]::GetFullPath((Join-Path $OutputRoot $Tag))
 $portableDir = Join-Path $releaseRoot "portable"
 $installerDir = Join-Path $releaseRoot "installer"
 $updaterDir = Join-Path $releaseRoot "updater"
+$supportDir = Join-Path $releaseRoot "support"
 if (Test-Path -LiteralPath $releaseRoot) {
   Remove-Item -LiteralPath $releaseRoot -Recurse -Force
 }
-New-Item -ItemType Directory -Force -Path $portableDir, $installerDir, $updaterDir | Out-Null
+New-Item -ItemType Directory -Force -Path $portableDir, $installerDir, $updaterDir, $supportDir | Out-Null
 
 $releaseExe = Join-Path $tauriRoot "target\release\prism_worldgen_lab.exe"
 $portableExe = Join-Path $portableDir "PRISM Worldgen Lab Portable.exe"
@@ -353,6 +354,7 @@ $latestJson = [ordered]@{
 $latestJsonPath = Join-Path $releaseRoot "latest.json"
 [System.IO.File]::WriteAllText($latestJsonPath, $latestJson, [System.Text.UTF8Encoding]::new($false))
 
+$manifestPath = Join-Path $releaseRoot "release-manifest.json"
 $manifest = [ordered]@{
   version = $Version
   tag = $Tag
@@ -364,10 +366,28 @@ $manifest = [ordered]@{
   updater_signature = $updateSignatureName
   latest_json = "latest.json"
   updater_uploads = @($updateAssetName, $updateSignatureName, "latest.json")
+  github_release_uploads = @(
+    [System.IO.Path]::GetFileName($portableZip),
+    "installer/$nsisReleaseName",
+    "installer/$msiReleaseName",
+    $updateAssetName,
+    $updateSignatureName,
+    "latest.json"
+  )
+  local_support_files = @(
+    "support/SHA256SUMS.txt",
+    "support/MICROSOFT_DEFENDER_SUBMISSION.md",
+    "release-manifest.json"
+  )
+  do_not_upload_to_github_release = @(
+    "support/SHA256SUMS.txt",
+    "support/MICROSOFT_DEFENDER_SUBMISSION.md",
+    "release-manifest.json"
+  )
   installer_runtime_note = "Windows installer uses the official Microsoft Edge WebView2 download bootstrapper when WebView2 is missing."
 } | ConvertTo-Json -Depth 5
 
-[System.IO.File]::WriteAllText((Join-Path $releaseRoot "release-manifest.json"), $manifest, [System.Text.UTF8Encoding]::new($false))
+[System.IO.File]::WriteAllText($manifestPath, $manifest, [System.Text.UTF8Encoding]::new($false))
 
 $checksumTargets = @(
   $portableZip,
@@ -376,13 +396,13 @@ $checksumTargets = @(
   $updateAssetPath,
   $updateSignaturePath,
   $latestJsonPath,
-  (Join-Path $releaseRoot "release-manifest.json")
+  $manifestPath
 )
 $checksumLines = $checksumTargets | ForEach-Object { New-Sha256Line $releaseRoot $_ }
-[System.IO.File]::WriteAllLines((Join-Path $releaseRoot "SHA256SUMS.txt"), $checksumLines, [System.Text.UTF8Encoding]::new($false))
+[System.IO.File]::WriteAllLines((Join-Path $supportDir "SHA256SUMS.txt"), $checksumLines, [System.Text.UTF8Encoding]::new($false))
 
 Write-DefenderSubmissionReadme `
-  -path (Join-Path $releaseRoot "MICROSOFT_DEFENDER_SUBMISSION.md") `
+  -path (Join-Path $supportDir "MICROSOFT_DEFENDER_SUBMISSION.md") `
   -artifactNames @(
     [System.IO.Path]::GetFileName($portableZip),
     "installer/$nsisReleaseName",
@@ -398,9 +418,10 @@ Write-Host " - $updateAssetName"
 Write-Host " - $updateSignatureName"
 Write-Host " - latest.json"
 Write-Host ""
-Write-Host "Trust and verification files:"
-Write-Host " - SHA256SUMS.txt"
-Write-Host " - MICROSOFT_DEFENDER_SUBMISSION.md"
+Write-Host "Local support files only; do not upload these as GitHub release assets:"
+Write-Host " - support/SHA256SUMS.txt"
+Write-Host " - support/MICROSOFT_DEFENDER_SUBMISSION.md"
+Write-Host " - release-manifest.json"
 
 if ($OpenFolder) {
   Invoke-Item $releaseRoot

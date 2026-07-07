@@ -1,6 +1,6 @@
 public/vanilla_datapacks/
 !public/vanilla_datapacks/
-!public/vanilla_datapacks/vanilla_1_21.zip
+!public/vanilla_datapacks/*.zip
 public/OTHER_LICENSES.txt
 !public/prism_datapacks/*.zip
 public/prism_mod_jars/*.jar
