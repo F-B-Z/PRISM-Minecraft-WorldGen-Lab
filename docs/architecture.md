@@ -1,7 +1,5 @@
 # PRISM Worldgen Lab Architecture
 
-Session: codex-20260612-px
-
 ## Purpose
 
 `prism_worldgen_lab` is the app-side preview lane for fast P.R.I.S.M. terrain
@@ -65,5 +63,3 @@ Current intended datapack order:
 - Do not copy generated `node_modules` or `dist` into source snapshots.
 - Do not treat app output as authoritative without in-game `prism_worldgen`
   verification.
-
-_Last edited: codex-20260624-pb_

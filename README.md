@@ -58,5 +58,3 @@ Desktop development:
 npm run desktop:dev
 npm run desktop:build
 ```
-
-_Last edited: codex-20260704-k9_

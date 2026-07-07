@@ -1,7 +1,0 @@
-e0b4c86595df8972352e7d8aad02b56482b3f3fc15c6c834051fd5c1fd98955f  PRISM-Worldgen-Lab-0.1.1-portable-windows-x64.zip
-5cd700433e57a942558e8efd8a185cc916dc606093a8f4fc849232e614dfcd2a  installer/PRISM-Worldgen-Lab-0.1.1-windows-x64-setup.exe
-2e735bb9087caf459154a4afedc514e330d7feae38e6dbe0c925ca77b9f937fd  installer/PRISM-Worldgen-Lab-0.1.1-windows-x64.msi
-5cd700433e57a942558e8efd8a185cc916dc606093a8f4fc849232e614dfcd2a  updater/PRISM-Worldgen-Lab-0.1.1-windows-x64-setup.exe
-15644f3a8954c53064fe3c95218421fa1e43d16515a0615d08e00877df436be9  updater/PRISM-Worldgen-Lab-0.1.1-windows-x64-setup.exe.sig
-b329100b2ac56b3c68b42e43ca40ef30fbbe33bc8e33656e033345a8af48916f  latest.json
-57064c397f1955ed6acc6e43ae33ee99761f98f55575f951e40d7d2c8bf5ab95  release-manifest.json
